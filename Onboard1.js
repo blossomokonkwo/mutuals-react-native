@@ -8,15 +8,15 @@ const Onboard1 = () => {
         <SafeAreaView ></SafeAreaView>
         <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1}}>
             <Text style={styles.text}>If you’re seeing this, 
-you (and everyone else) have been invited to the private beta by <Text style={{fontWeight: 'bold'}}>nihjea</Text>. 🤫 ✉️</Text>
+you (and everyone else) have been invited to the private beta by <Text style={{fontWeight: 'bold', fontFamily: 'Roboto-Bold'}}>nihjea</Text>. 🤫 ✉️</Text>
 
-            <Text style={styles.text}>We tried to <Text style={{fontWeight: 'bold'}}>match mutuals</Text> with <Text style={{fontWeight: 'bold'}}> google forms</Text> but got way too many submissions
+            <Text style={styles.text}>We tried to <Text style={{fontWeight: 'bold', fontFamily: 'Roboto-Bold'}}>match mutuals</Text> with <Text style={{fontWeight: 'bold', fontFamily: 'Roboto-Bold'}}> google forms</Text> but got way too many submissions
             to keep track of. 😴</Text>
 
 
         <Text style={styles.text}>We decided to
-         <Text style={{fontWeight: 'bold'}}> create an app </Text> to 
-        <Text style={{fontWeight: 'bold'}}> automate </Text> that process. 
+         <Text style={{fontWeight: 'bold', fontFamily: 'Roboto-Bold'}}> create an app </Text> to 
+        <Text style={{fontWeight: 'bold', fontFamily: 'Roboto-Bold'}}> automate </Text> that process. 
         <Text>{"\n"}Enjoy 🤓💖</Text>
          </Text>
 
@@ -42,11 +42,10 @@ const styles = StyleSheet.create({
     text: {
         paddingTop: 30,
         paddingBottom: 5,
-        paddingLeft: 70,
-        paddingRight: 70,
+        paddingHorizontal: 70,
         alignContent: 'center',
         alignItems: 'center',
-        // fontFamily: 'San Francisco',
+        fontFamily: 'Roboto-Regular',
         fontSize: 18,
         color: '#000000'
     },
