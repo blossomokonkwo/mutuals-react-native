@@ -1,5 +1,5 @@
 import React from 'react';
-import type {Node} from 'react';
+import type { Node } from 'react';
 import Onboard1 from './Onboard1.js';
 import Onboard2 from './Onboard2.js';
 import PhoneNumberInput from './PhoneNumberInput.js';
@@ -16,19 +16,23 @@ import {
   View,
   TextInput,
   Button,
-  FlatList
+  FlatList,
+  Image,
+  TouchableOpacity
 } from 'react-native';
 const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <>
-    <Onboard1></Onboard1>
-  {/* // <NavigationContainer>
-  //   <Stack.Navigator>
-  //     <Stack.Screen name="Onboard1" component={Onboard1} options={{title: "Home"}}></Stack.Screen>
-  //   </Stack.Navigator>
-  // </NavigationContainer> */}
-  </>
+      {/* <Onboard1/> */}
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Onboard1" component={Onboard1} options={{ headerTitle: '', headerShown: true, headerBackVisible: false, headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="Onboard2" component={Onboard2} options={{ headerTitle: '', headerShown: true, headerBackVisible: true, headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="PhoneNumberInput" component={PhoneNumberInput} options={{headerTitle: '', headerShow: false, headerBackVisible: true, headerShadowVisible: false, headerStyle: {color: 'white'}}}></Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 
 };

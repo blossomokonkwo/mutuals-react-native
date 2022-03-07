@@ -1,29 +1,30 @@
 import React from 'react';
-import {Text, StyleSheet, SafeAreaView, Button, View} from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity } from 'react-native';
 
-const Onboard2 = () => {
+const Onboard2 = ({navigation}) => {
     return (
         <>
             <SafeAreaView ></SafeAreaView>
-            <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1}}>
-                <Text style={{fontSize: 18, fontWeight: '600', justifyContent: 'flex-start', alignItems: 'flex-start', paddingRight: 128}}>Here's how it goes:</Text>
-                <Text style={styles.text}>You <Text style={{fontWeight: 'bold'}}>answer prompts</Text>. These are special prompts that give us a window into your soul, or something like that. 🤲🧬
+            <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1 }}>
+                <Text style={{ fontSize: 18, fontWeight: '600', justifyContent: 'flex-start', alignItems: 'flex-start', paddingRight: 128 }}>Here's how it goes:</Text>
+                <Text style={styles.text}>You <Text style={{ fontWeight: 'bold' }}>answer prompts</Text>. These are special prompts that give us a window into your soul, or something like that. 🤲🧬
                 </Text>
 
-                <Text style={styles.text}>Based on your prompt answers, our <Text style={{fontWeight: 'bold'}}>algorithm</Text> gives you a feed of answers from <Text style={{fontWeight: 'bold'}}>potential mutuals</Text>.</Text>
-                <Text style={styles.text}>Like their answer to a prompt? <Text style={{fontWeight: 'bold'}}>Mutual them</Text>🗣‼️</Text>
+                <Text style={styles.text}>Based on your prompt answers, our <Text style={{ fontWeight: 'bold' }}>algorithm</Text> gives you a feed of answers from <Text style={{ fontWeight: 'bold' }}>potential mutuals</Text>.</Text>
+                <Text style={styles.text}>Like their answer to a prompt? <Text style={{ fontWeight: 'bold' }}>Mutual them</Text>🗣‼️</Text>
 
-                <View style={{paddingBottom: 109}}></View>
+                <View style={{ paddingBottom: 109 }}></View>
 
-                <View style={styles.button}>
-                    <Button title="Sign up and get started" color='white' onClick={() => {
-
-                    }}>
-                    </Button>
-                </View>
+                <TouchableOpacity style={styles.button} onPress={() => {
+                    navigation.navigate('PhoneNumberInput')
+                }}>
+                    <Text style={{color: 'white', fontFamily: 'Roboto-Regular', fontSize: 20, fontWeight: '400'}}>
+                        Sign up and get started
+                    </Text>
+                </TouchableOpacity>
 
             </View>
-        
+
         </>
     );
 };

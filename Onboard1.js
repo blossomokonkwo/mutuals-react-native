@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, StyleSheet, SafeAreaView, Button, View} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity} from 'react-native';
 
 
-const Onboard1 = () => {
+const Onboard1 = ({navigation}) => {
     return (
         <>
         <SafeAreaView ></SafeAreaView>
-        <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1}}>
+        <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1, backgroundColor: 'white'}}>
             <Text style={styles.text}>If you’re seeing this, 
 you (and everyone else) have been invited to the private beta by <Text style={{fontWeight: 'bold', fontFamily: 'Roboto-Bold'}}>nihjea</Text>. 🤫 ✉️</Text>
 
@@ -22,13 +22,13 @@ you (and everyone else) have been invited to the private beta by <Text style={{f
 
          <View style={{paddingBottom: 179}}></View>
 
-        <View style={styles.button}>
-        <Button  title="Enter" color='white' onClick= {() => {
-            // Navigation should transition
-        }}></Button>
-        </View>
+        <TouchableOpacity style={styles.button} onPress={() => {
+            navigation.navigate('Onboard2')
+        }}>
+        <Text  style={{fontFamily: 'Roboto-Regular', color: 'white', fontSize: 20 }}>Enter</Text>
+        </TouchableOpacity>
 
-        <Text style={{fontSize: 12, justifyContent: 'center', alignContent: 'center', flexDirection: 'row', padding: 10}}>Enter to begin</Text>
+        <Text style={{fontFamily: 'Roboto-Regular', fontSize: 12, justifyContent: 'center', alignContent: 'center', flexDirection: 'row', padding: 10}}>Enter to begin</Text>
         </View>
          
         </>
