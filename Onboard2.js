@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 50,
         paddingRight: 80,
-        // fontFamily: 'San Francisco',
+        fontFamily: 'Roboto-Regular',
         fontSize: 18,
         color: '#000000'
     },

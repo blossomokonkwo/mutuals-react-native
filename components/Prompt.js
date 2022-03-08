@@ -1,14 +1,43 @@
 import React, { useState, useRef } from "react";
 import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import CurrentUser from "../data/models/CurrentUser";
+import { productionDomain } from "../networking/api_variables";
+const {prompts} = require('../prompts');
+import * as Keychain from 'react-native-keychain';
+
 
 
 const postAnswerToPrompt = async (answer, promptId) => {
-    await new Promise((resolve, reject) => {
-
+    const credential = await Keychain.getInternetCredentials(productionDomain);
+    // const credential = CurrentUser.current().accessToken;
+    const password = credential.password;
+    console.log(password);
+    return new Promise((resolve, reject) => {
+        fetch(`${productionDomain}/prompts/${promptId}/answers`, {
+            method: 'Post', 
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${password}`
+            },
+            body: JSON.stringify({
+                answer: answer,
+                prompt_id: promptId
+            })
+        })
+        .then((response) => {
+            if(response.ok) {
+                resolve();
+            } else {
+                reject(`Status error ${response.status}`);
+            }
+        })
+        .catch((error) => {
+            reject(error);
+        })
     });
 };
 
-const {prompts} = require('../prompts');
 const Prompt = ({route, navigation}) => {
     const [answer, setAnswer] = useState('');
     const { prompt, currentIndex} = route.params;
@@ -23,7 +52,7 @@ const Prompt = ({route, navigation}) => {
                 <View style={{marginTop: 2}}></View>
                 <Text style={{marginLeft: 35, marginRight: 39, fontFamily: 'Roboto-Regular', fontSize: 12, color: '#BDBDBD'}}>{prompt['subtitle']}</Text>
                 <View style={{marginTop: 14}}></View>
-            <View style={{backgroundColor: '#F8F8F8', borderRadius: 10, marginHorizontal: 34, width: '85%', alignSelf: 'flex-start'}}>
+            <View style={{backgroundColor: '#F8F8F8', borderRadius: 10, marginHorizontal: 34, paddingTop: 12, width: '85%', alignSelf: 'flex-start'}}>
                 <TextInput keyboardType='ascii-capable' style={styles.input} multiline={true} onChangeText={(text) => {
                     setAnswer(text);
                 }}>
@@ -34,7 +63,13 @@ const Prompt = ({route, navigation}) => {
                 <TouchableOpacity style={{backgroundColor: '#16A2EF', alignItems: 'center', borderRadius: 100, alignSelf: 'flex-end', marginRight: 37}} onPress={() => {
                     if(prompts.length > currentIndex + 1) {
                         const prompt = prompts[currentIndex + 1];
-                        navigation.push('Prompt', {currentIndex: currentIndex+1, prompt: prompt});
+                        postAnswerToPrompt(answer, prompt.id)
+                        .then(() => {
+                            navigation.push('Prompt', {currentIndex: currentIndex+1, prompt: prompt});
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
                     } else {
                         navigation.navigate('TikTokDisplayName')
                     }

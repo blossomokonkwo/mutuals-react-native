@@ -4,8 +4,8 @@ import PhoneInput from "react-native-phone-number-input";
 import parsePhoneNumber from 'libphonenumber-js'
 const {productionDomain, inProduction} = require('./networking/api_variables.js');
 
-const validatePhoneNumber = async (text) => {
-    await new Promise((resolve, reject) => {
+const validatePhoneNumber = (text) => {
+    return new Promise((resolve, reject) => {
         fetch(`${productionDomain}/signup/validate`, {
             method: 'Post',
             headers: {
@@ -20,7 +20,6 @@ const validatePhoneNumber = async (text) => {
             if(!response.ok) {                
                 reject(`Status code error ${response.status}`);
             } else {
-                // console.log(response);
                 resolve();
             }
         })
@@ -28,11 +27,11 @@ const validatePhoneNumber = async (text) => {
             reject(error);
             console.error(error);
         });
-    })
+    });
 };
 
-const sendVerificationToken = async (text) => {
-    await new Promise( (resolve, reject) => {
+const sendVerificationToken = (text) => {
+    return new Promise( (resolve, reject) => {
         fetch(`${productionDomain}/signup/send-token`, {
             method: 'Post',
             headers: {

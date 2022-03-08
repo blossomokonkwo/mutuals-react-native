@@ -1,16 +1,18 @@
-
+import * as Keychain from 'react-native-keychain';
 import React, { useState, useRef } from "react";
 import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput } from 'react-native';
 import { productionDomain } from "../networking/api_variables";
-const {authToken} = require('../');
+
 const uploadTikTokUsername = async (username) => {
-    await new Promise((resolve, reject) => {
+    const credential = await Keychain.getInternetCredentials(productionDomain);
+    const password = credential.password;
+    return new Promise((resolve, reject) => {
         fetch(`${productionDomain}/users`, {
             method: 'Put',
             headers: {
                 'Content-Type' : 'application/json',
                 Accept: 'application/json',
-                'Authorization': `Bearer ${authToken}`
+                'Authorization': `Bearer ${password}`
             }, 
             body: JSON.stringify({
                 display_name: username
@@ -20,7 +22,7 @@ const uploadTikTokUsername = async (username) => {
             if(!response.ok) {                
                 reject(`Status code error ${response.status}`);
             } else {
-                // console.log(response);
+                console.log(response);
                 resolve();
             }
         })
@@ -36,7 +38,6 @@ const TikTokDisplayName = ({navigation}) => {
     return (
         <>
             <SafeAreaView></SafeAreaView>
-            {/* <View> */}
             <View style={{backgroundColor: 'white', flexDirection: 'column', paddingTop: '40%', flex: 1}}>
                 <Text style={{marginLeft: 35, marginRight: 39, fontFamily: 'Roboto-Regular', fontSize: 18, fontWeight: '500'}}>
                 What’s your tiktok username? 
@@ -53,12 +54,7 @@ const TikTokDisplayName = ({navigation}) => {
                 <View style={{marginTop: 27}}></View>
                 
                 <TouchableOpacity style={{backgroundColor: '#16A2EF', alignItems: 'center', borderRadius: 100, alignSelf: 'flex-end', marginRight: 37}} onPress={() => {
-                    // if(prompts.length > currentIndex + 1) {
-                    //     const prompt = prompts[currentIndex + 1];
-                    //     navigation.push('Prompt', {currentIndex: currentIndex+1, prompt: prompt});
-                    // } else {
-                    //     navigation.navigate('TikTokDisplayName')
-                    // }
+                    console.log(`This is the username: ${username}`);
                     uploadTikTokUsername(username)
                     .then(() => {
                         navigation.navigate('');
@@ -72,13 +68,6 @@ const TikTokDisplayName = ({navigation}) => {
                     </Text>
                 </TouchableOpacity>
             </View>
-
-
-
-
-
-            {/* </View> */}
-
         </>
     );
 };

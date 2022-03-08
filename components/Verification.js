@@ -5,7 +5,7 @@ import { productionDomain } from "../networking/api_variables";
 import SettingsKeys from '../util/settings/SettingsKeys';
 
 const verifyToken = async (token, phoneNumber) => {
-    await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch(`${productionDomain}/signup/verify`, {
             method: 'Post',
             headers: {
@@ -31,7 +31,7 @@ const verifyToken = async (token, phoneNumber) => {
 };
 
 const createNewUser =  async (phoneNumber) => {
-   await new Promise((resolve, reject) => {
+   return new Promise((resolve, reject) => {
         fetch(`${productionDomain}/signup`, {
             method: 'Post',
             headers: {
