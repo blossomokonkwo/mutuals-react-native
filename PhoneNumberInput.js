@@ -2,11 +2,11 @@ import React, { useState, useRef } from "react";
 import {Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity} from 'react-native';
 import PhoneInput from "react-native-phone-number-input";
 import parsePhoneNumber from 'libphonenumber-js'
-const {productioDomain, inProduction} = require('./networking/api_variables.js');
+const {productionDomain, inProduction} = require('./networking/api_variables.js');
 
 const validatePhoneNumber = async (text) => {
     await new Promise((resolve, reject) => {
-        fetch(`${productioDomain}/signup/validate`, {
+        fetch(`${productionDomain}/signup/validate`, {
             method: 'Post',
             headers: {
                 Accept: 'application/json',
@@ -33,7 +33,7 @@ const validatePhoneNumber = async (text) => {
 
 const sendVerificationToken = async (text) => {
     await new Promise( (resolve, reject) => {
-        fetch(`${productioDomain}/signup/send-token`, {
+        fetch(`${productionDomain}/signup/send-token`, {
             method: 'Post',
             headers: {
                 Accept: 'application/json',

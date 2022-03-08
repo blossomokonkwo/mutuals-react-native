@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 
 
 const postAnswerToPrompt = async (answer, promptId) => {
@@ -15,6 +15,7 @@ const Prompt = ({route, navigation}) => {
     return (
         <>
             <SafeAreaView></SafeAreaView>
+            <ScrollView style={{backgroundColor: 'white'}}>
             <View style={{backgroundColor: 'white', flexDirection: 'column', paddingTop: '40%', flex: 1}}>
                 <Text style={{marginLeft: 35, marginRight: 39, fontFamily: 'Roboto-Regular', fontSize: 18, fontWeight: '500'}}>
                 {prompt['header']}
@@ -35,14 +36,16 @@ const Prompt = ({route, navigation}) => {
                         const prompt = prompts[currentIndex + 1];
                         navigation.push('Prompt', {currentIndex: currentIndex+1, prompt: prompt});
                     } else {
-                        navigation.push('')
+                        navigation.navigate('TikTokDisplayName')
                     }
                 }}>
                     <Text style={{color: "#FFFFFF",fontSize: 18, fontWeight: '400', fontFamily: 'Roboto-Regular', paddingVertical: 15, paddingHorizontal: 29}}>
                         Next
                     </Text>
                 </TouchableOpacity>
+                <SafeAreaView></SafeAreaView>
             </View>
+            </ScrollView>
 
         </>
     );
