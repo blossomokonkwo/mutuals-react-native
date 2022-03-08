@@ -25,7 +25,7 @@ you (and everyone else) have been invited to the private beta by <Text style={{f
         <TouchableOpacity style={styles.button} onPress={() => {
             navigation.navigate('Onboard2')
         }}>
-        <Text  style={{fontFamily: 'Roboto-Regular', color: 'white', fontSize: 20 }}>Enter</Text>
+        <Text  style={{color: "#FFFFFF", padding: 20, fontSize: 18, fontWeight: '400', paddingVertical: 15, paddingHorizontal: 70}}>Enter</Text>
         </TouchableOpacity>
 
         <Text style={{fontFamily: 'Roboto-Regular', fontSize: 12, justifyContent: 'center', alignContent: 'center', flexDirection: 'row', padding: 10}}>Enter to begin</Text>

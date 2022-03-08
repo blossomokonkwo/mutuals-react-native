@@ -16,9 +16,9 @@ const Onboard2 = ({navigation}) => {
                 <View style={{ paddingBottom: 109 }}></View>
 
                 <TouchableOpacity style={styles.button} onPress={() => {
-                    navigation.navigate('PhoneNumberInput')
+                    navigation.navigate('PhoneNumberInput');
                 }}>
-                    <Text style={{color: 'white', fontFamily: 'Roboto-Regular', fontSize: 20, fontWeight: '400'}}>
+                    <Text style={{color: 'white', fontFamily: 'Roboto-Regular', fontSize: 18, fontWeight: '400'}}>
                         Sign up and get started
                     </Text>
                 </TouchableOpacity>

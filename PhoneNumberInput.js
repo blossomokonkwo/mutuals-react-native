@@ -80,6 +80,9 @@ const PhoneNumberInput = ({navigation}) => {
             }}>Privacy policy</Text></Text>
             <View style={{paddingTop: 26}}></View>
             <TouchableOpacity style={{backgroundColor: '#16A2EF', borderRadius: 100, width: '85%', justifyContent: 'center', alignItems: 'center'}} onPress={() => {
+                if(phoneNumber === "") {
+                    return
+                }
                 const isValid = parsePhoneNumber(phoneNumber).isValid();;
                 setValid(isValid);
                 // console.log("is Valid number", valid, isValid, phoneNumber);
@@ -89,7 +92,7 @@ const PhoneNumberInput = ({navigation}) => {
                         sendVerificationToken(phoneNumber)
                         .then((response) => {
                             console.log("This is the send token reponse", response);
-                            navigation.navigate('Verification');
+                            navigation.navigate('Verification', {phoneNumber: phoneNumber});
                         })
                         .catch((error) => {
                             console.log(error);
