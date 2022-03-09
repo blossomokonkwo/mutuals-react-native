@@ -86,11 +86,10 @@ const App = () => {
             <Stack.Screen name="Prompt" component={Prompt} options={{headerTitle: 'Set up your profile', headerShow: false, headerBackVisible: true, headerBackTitle: '', headerShadowVisible: false, headerTintColor: 'black', headerStyle: {color: 'white'}}}></Stack.Screen>
             <Stack.Screen name="TikTokDisplayName" component={TikTokDisplayName} options={{headerTitle: 'Set up your profile', headerShow: false, headerBackTitle: '', headerBackVisible: false, headerTintColor: 'black', headerShadowVisible: false, headerStyle: {color: 'white'}}}></Stack.Screen>
           </Stack.Navigator>
-            {/* <Stack.Screen name="MainTabBar" component={MainTabBar} options={{headerTitle: '', headerShow: false, headerBackTitle: '', headerBackVisible: false, headerShadowVisible: false, headerStyle: {color: 'white'}}}></Stack.Screen> */}
         </NavigationContainer>
     );
   } else {
-    return <MainTabBar></MainTabBar>
+    return <MainTabBar/>
   };
 };
 
