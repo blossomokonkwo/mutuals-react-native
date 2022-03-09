@@ -2,6 +2,11 @@ import * as Keychain from 'react-native-keychain';
 import React, { useState, useRef } from "react";
 import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput } from 'react-native';
 import { productionDomain } from "../networking/api_variables";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainTabBar from './MainTabBar';
+const Tab = createBottomTabNavigator();
 
 const uploadTikTokUsername = async (username) => {
     const credential = await Keychain.getInternetCredentials(productionDomain);
@@ -57,7 +62,7 @@ const TikTokDisplayName = ({navigation}) => {
                     console.log(`This is the username: ${username}`);
                     uploadTikTokUsername(username)
                     .then(() => {
-                        navigation.navigate('');
+                        navigation.navigate('MainTabBar');
                     })
                     .catch((error) => {
 
