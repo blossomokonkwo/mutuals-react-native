@@ -72,6 +72,8 @@ const App = () => {
     }
   }))
 
+  //checks if user is logged in & has an auth token, sends to onboarding flow if no user token is stored
+  
   if (state.isLoading) {
     return <SplashScreen></SplashScreen>
   } else if (state.userToken == null) {
