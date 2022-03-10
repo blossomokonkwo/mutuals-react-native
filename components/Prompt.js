@@ -61,7 +61,7 @@ const Prompt = ({route, navigation}) => {
                 <View style={{marginTop: 27}}></View>
                 
                 <TouchableOpacity style={{backgroundColor: '#16A2EF', alignItems: 'center', borderRadius: 100, alignSelf: 'flex-end', marginRight: 37}} onPress={() => {
-                    if(prompts.length > currentIndex) {
+                    if(prompts.length > currentIndex + 1) {
                         const prompt = prompts[currentIndex];   
                         postAnswerToPrompt(answer, prompt.id)
                         .then(() => {
