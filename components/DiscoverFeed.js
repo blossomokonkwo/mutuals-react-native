@@ -3,10 +3,8 @@ import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Keychain from 'react-native-keychain';
-
 import {productionDomain} from "../networking/api_variables"
 import Icon from "react-native-vector-icons/MaterialIcons";
-const Stack = createNativeStackNavigator();
 
 
 
@@ -34,7 +32,6 @@ const fetchItems = async (limit, offset) => {
 };
 
 const renderItem = ({  item  }) => {
-    console.log(item.id);
     const promptBody = item.prompt.body;
     const answerBody = item.body;
     return (
@@ -58,13 +55,13 @@ const renderItem = ({  item  }) => {
 
 const DiscoverFeed = () => {
     const [items, setItems] = useState(null);
-    let itemOffset = 0;
-    let itemLimit = 10; 
+    let itemLimit = 100; 
+    const flatlist = useRef();
+
 
     useEffect( () => {
-        fetchItems(itemLimit, itemOffset)
+        fetchItems(itemLimit, 0)
         .then((data) => {
-            itemOffset = 0;
             setItems(data);
         })
         .catch((error) => {
@@ -78,21 +75,32 @@ const DiscoverFeed = () => {
     )
     return (
         <SafeAreaView style={styles.mainView}>
-            <FlatList style={styles.flatList} data={items} keyExtractor={(item) => item.id} refreshing={false} onRefresh={() => {
-                fetchItems(itemLimit, itemOffset)
+            <FlatList ref={flatlist} style={styles.flatList} data={items} keyExtractor={(item) => item.id} refreshing={false} onRefresh={() => {
+                flatlist.refreshing = true 
+                fetchItems(itemLimit, 0)
                 .then((data) => {
-                    itemOffset = 0;
                     setItems(data);
+                    flatlist.refreshing = false;
                 })
                 .catch((error) => {
                     if(items.length > 0) {
                         setItems(items.splice(0, items.length));
                     }
                     console.log(error);
+                    flatlist.refreshing = false;
                 })
                 
                 
-                }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{backgroundColor: '#F0F0F0', height: 1}}></View>}>
+                }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{backgroundColor: '#F0F0F0', height: 1}}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
+                    fetchItems(itemLimit, items.length)
+                    .then((data) => {
+                        console.log('Appending more content to flatlist!');
+                        setItems(items.concat(data));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+                }}>
                 
             </FlatList>
         </SafeAreaView>
