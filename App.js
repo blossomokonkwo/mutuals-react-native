@@ -35,17 +35,17 @@ const App = () => {
           isSignOut: false,
           userToken: action.token
         }
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignOut: true,
-            userToken: null
-          }
-  
+      case 'SIGN_OUT':
+        return {
+          ...prevState,
+          isSignOut: true,
+          userToken: null
+        }
+
       default:
         break;
     }
-  }, {isLoading: true, isSignOut: true, userToken: null});
+  }, { isLoading: true, isSignOut: true, userToken: null });
 
   React.useEffect(() => {
     const fetchToken = async () => {
@@ -55,7 +55,7 @@ const App = () => {
       } catch (error) {
         // Restoring token failed
       }
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
     fetchToken();
   }, []);
@@ -76,20 +76,20 @@ const App = () => {
     return <SplashScreen></SplashScreen>
   } else if (state.userToken == null) {
     return (
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Onboard1">
-            <Stack.Screen name="Onboard1" component={Onboard1} options={{ headerTitle: '', headerShown: true, headerBackVisible: false, headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
-            <Stack.Screen name="Onboard2" component={Onboard2} options={{ headerTitle: '', headerShown: true, headerBackVisible: true, headerTintColor: 'black', headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
-            <Stack.Screen name="PhoneNumberInput" component={PhoneNumberInput} options={{headerTitle: 'Sign up', headerShow: false, headerBackVisible: true, headerTintColor: 'black', headerShadowVisible: false, headerStyle: {color: 'white'}}}></Stack.Screen>
-            <Stack.Screen name="Verification" component={Verification} options={{headerTitle: 'Sign up', headerShow: false, headerBackVisible: true, headerBackTitle: '', headerShadowVisible: false, headerTintColor: 'black', headerStyle: {color: 'white'}}}></Stack.Screen>
-            <Stack.Screen name="Onboard3" component={Onboard3} options={{headerTitle: 'Set up your profile', headerShow: false, headerBackVisible: true, headerBackTitle: '', headerShadowVisible: false, headerTintColor: 'black', headerStyle: {color: 'white'}}}></Stack.Screen>
-            <Stack.Screen name="Prompt" component={Prompt} options={{headerTitle: 'Set up your profile', headerShow: false, headerBackVisible: true, headerBackTitle: '', headerShadowVisible: false, headerTintColor: 'black', headerStyle: {color: 'white'}}}></Stack.Screen>
-            <Stack.Screen name="TikTokDisplayName" component={TikTokDisplayName} options={{headerTitle: 'Set up your profile', headerShow: false, headerBackTitle: '', headerBackVisible: false, headerTintColor: 'black', headerShadowVisible: false, headerStyle: {color: 'white'}}}></Stack.Screen>
-          </Stack.Navigator>
-        </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Onboard1">
+          <Stack.Screen name="Onboard1" component={Onboard1} options={{ headerTitle: '', headerShown: true, headerBackVisible: false, headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="Onboard2" component={Onboard2} options={{ headerTitle: '', headerShown: true, headerBackVisible: true, headerTintColor: 'black', headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="PhoneNumberInput" component={PhoneNumberInput} options={{ headerTitle: 'Sign up', headerShow: false, headerBackVisible: true, headerTintColor: 'black', headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="Verification" component={Verification} options={{ headerTitle: 'Sign up', headerShow: false, headerBackVisible: true, headerBackTitle: '', headerShadowVisible: false, headerTintColor: 'black', headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="Onboard3" component={Onboard3} options={{ headerTitle: 'Set up your profile', headerShow: false, headerBackVisible: true, headerBackTitle: '', headerShadowVisible: false, headerTintColor: 'black', headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="Prompt" component={Prompt} options={{ headerTitle: 'Set up your profile', headerShow: false, headerBackVisible: true, headerBackTitle: '', headerShadowVisible: false, headerTintColor: 'black', headerStyle: { color: 'white' } }}></Stack.Screen>
+          <Stack.Screen name="TikTokDisplayName" component={TikTokDisplayName} options={{ headerTitle: 'Set up your profile', headerShow: false, headerBackTitle: '', headerBackVisible: false, headerTintColor: 'black', headerShadowVisible: false, headerStyle: { color: 'white' } }}></Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   } else {
-    return <MainTabBar/>
+    return <MainTabBar />
   };
 };
 

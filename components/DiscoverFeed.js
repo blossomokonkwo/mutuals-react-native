@@ -3,7 +3,7 @@ import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Keychain from 'react-native-keychain';
-import {productionDomain} from "../networking/api_variables";
+import { productionDomain } from "../networking/api_variables";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 
@@ -11,16 +11,16 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 const fetchItems = async (limit, offset) => {
     const credential = await Keychain.getInternetCredentials(productionDomain);
     const token = credential.password;
-    return  fetch(`${productionDomain}/?` + new URLSearchParams({limit: limit, offset: offset}), {
-            method: 'Get',
-            headers: {
-                'Content-Type': 'application/json',
-                accept: 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
+    return fetch(`${productionDomain}/?` + new URLSearchParams({ limit: limit, offset: offset }), {
+        method: 'Get',
+        headers: {
+            'Content-Type': 'application/json',
+            accept: 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then((response) => {
-            if(response.ok) {
+            if (response.ok) {
                 return response.json();
             } else {
                 throw new Error(response.status);
@@ -46,18 +46,18 @@ const sendMessage = async (item, userId, message) => {
             message: message
         })
     })
-    .then((response) => {
-        if(response.ok) {
-            return response.json();
-        } else {
-            throw new Error(response.status);
-        }
-    })
-    .then((data) => {return data})
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(response.status);
+            }
+        })
+        .then((data) => { return data })
 
 };
 
-const Item = ({item}) => {
+const Item = ({ item }) => {
     const [message, setMessage] = useState('');
     const promptBody = item.prompt.body;
     const answerBody = item.body;
@@ -69,86 +69,86 @@ const Item = ({item}) => {
             <View style={styles.stackView}>
                 <View style={styles.profileView}>
                     <TouchableOpacity style={styles.avatarView}>
-                        <Image defaultSource={require('../assets/images/BlankProfileAsset.png')} source={{uri: 'user.avatar_url', cache: 'force-cache'}} height={styles.avatarView.height} width={styles.avatarView.width}></Image>
+                        <Image defaultSource={require('../assets/images/BlankProfileAsset.png')} source={{ uri: 'user.avatar_url', cache: 'force-cache' }} height={styles.avatarView.height} width={styles.avatarView.width}></Image>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                     <Text style={styles.displayName}>{displayName}</Text>
+                        <Text style={styles.displayName}>{displayName}</Text>
                     </TouchableOpacity>
                 </View>
-            <Text style={styles.promptText}>{promptBody}</Text>
-            <Text style={styles.answerText}>{answerBody}</Text>
-            <View style={{marginBottom: 10}}></View>
-            <View style={styles.textInputView}>
-            <TextInput ref={inputView} style={styles.textInput} placeholder={"Reply..."} multiline={true} onChangeText={(text) => {
-                setMessage(text);
-            }}>
+                <Text style={styles.promptText}>{promptBody}</Text>
+                <Text style={styles.answerText}>{answerBody}</Text>
+                <View style={{ marginBottom: 10 }}></View>
+                <View style={styles.textInputView}>
+                    <TextInput ref={inputView} style={styles.textInput} placeholder={"Reply..."} multiline={true} onChangeText={(text) => {
+                        setMessage(text);
+                    }}>
 
-            </TextInput>
-            <TouchableOpacity style={{backgroundColor: '#0581DC', height: 28, width: 28, borderRadius: 15, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginRight: 10, flexShrink: 0}} onPress={() => {
-                console.log('Pressed send message button');
-                Keyboard.dismiss(); // dismiss the keyboard
-                inputView.current.clear(); // Clear the input view
-                console.log('This is the message', message);
-                sendMessage(item, user.id, message)
-                .then((data) => {
-                    console.log(data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            }}>
-                <Icon name={"arrow-upward"} size={15} color={'white'}></Icon>
-            </TouchableOpacity>
-            </View>
+                    </TextInput>
+                    <TouchableOpacity style={{ backgroundColor: '#0581DC', height: 28, width: 28, borderRadius: 15, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginRight: 10, flexShrink: 0 }} onPress={() => {
+                        console.log('Pressed send message button');
+                        Keyboard.dismiss(); // dismiss the keyboard
+                        inputView.current.clear(); // Clear the input view
+                        console.log('This is the message', message);
+                        sendMessage(item, user.id, message)
+                            .then((data) => {
+                                console.log(data);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    }}>
+                        <Icon name={"arrow-upward"} size={15} color={'white'}></Icon>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     )
 };
 
-const renderItem = ({  item  }) => {
-    return <Item item={item}/>
+const renderItem = ({ item }) => {
+    return <Item item={item} />
 };
 
 const DiscoverFeed = () => {
     const [items, setItems] = useState(null);
-    let itemLimit = 100; 
+    let itemLimit = 100;
     const flatlist = useRef();
 
 
-    useEffect( () => {
+    useEffect(() => {
         fetchItems(itemLimit, 0)
-        .then((data) => {
-            setItems(data);
-        })
-        .catch((error) => {
-            if(items.length > 0) {
-                setItems(items.splice(0, items.length));
-            }
-            console.log(error);
-        })
-        }
+            .then((data) => {
+                setItems(data);
+            })
+            .catch((error) => {
+                if (items.length > 0) {
+                    setItems(items.splice(0, items.length));
+                }
+                console.log(error);
+            })
+    }
         , []
     )
     return (
         <SafeAreaView style={styles.mainView}>
             <FlatList ref={flatlist} style={styles.flatList} data={items} keyExtractor={(item) => item.id} refreshing={false} inverted={false} keyboardShouldPersistTaps='handled' keyboardDismissMode='on-drag' onRefresh={() => {
-                flatlist.refreshing = true 
+                flatlist.refreshing = true
                 fetchItems(itemLimit, 0)
-                .then((data) => {
-                    setItems(data);
-                    flatlist.refreshing = false;
-                })
-                .catch((error) => {
-                    if(items.length > 0) {
-                        setItems(items.splice(0, items.length));
-                    }
-                    console.log(error);
-                    flatlist.refreshing = false;
-                })
-                
-                
-                }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{backgroundColor: '#F0F0F0', height: 1}}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
-                    fetchItems(itemLimit, items.length)
+                    .then((data) => {
+                        setItems(data);
+                        flatlist.refreshing = false;
+                    })
+                    .catch((error) => {
+                        if (items.length > 0) {
+                            setItems(items.splice(0, items.length));
+                        }
+                        console.log(error);
+                        flatlist.refreshing = false;
+                    })
+
+
+            }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
+                fetchItems(itemLimit, items.length)
                     .then((data) => {
                         console.log('Appending more content to flatlist!');
                         setItems(items.concat(data));
@@ -156,8 +156,8 @@ const DiscoverFeed = () => {
                     .catch((error) => {
                         console.log(error);
                     })
-                }}>
-                
+            }}>
+
             </FlatList>
         </SafeAreaView>
     );

@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, FlatList, dismissKeyboard, TouchableHighlight } from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import {productionDomain} from "../networking/api_variables"
+import { productionDomain } from "../networking/api_variables"
 
 
 const fetchItems = async (limit, offset) => {
     const credential = await Keychain.getInternetCredentials(productionDomain);
     const token = credential.password;
-    return fetch(`${productionDomain}/chat_rooms?` + new URLSearchParams({offset: offset, limit: limit}), {
+    return fetch(`${productionDomain}/chat_rooms?` + new URLSearchParams({ offset: offset, limit: limit }), {
         method: 'Get',
         headers: {
             'Content-Type': 'application/json',
@@ -15,53 +15,96 @@ const fetchItems = async (limit, offset) => {
             'Authorization': `Bearer ${token}`
         }
     })
-    .then((response) => {
-        if(response.ok) {
-            return response.json();
-        } else {
-            throw new Error(response.status);
-        }
-    })
-    .then((data) => {
-        return data;
-    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(response.status);
+            }
+        })
+        .then((data) => {
+            return data;
+        })
 
+};
+
+const Item = ({ item }) => {
+    const user = item.chat_room_users[0];
+    const recentMessage = item.recent_message;
+    return <TouchableHighlight style={styles.itemContentView}>
+        <View style={styles.itemContentViewMainHorizontalView}>
+            <TouchableOpacity style={styles.itemAvatarView}>
+                <Image source={require('../assets/images/BlankProfileAsset.png')} defaultSource={require('../assets/images/BlankProfileAsset.png')} style={{ width: 65, height: 65 }}>
+
+                </Image>
+            </TouchableOpacity>
+            <View style={{ marginHorizontal: 10 }}></View>
+            <View style={styles.itemContentViewTextVerticalView}>
+                <Text style={styles.displayName}>
+                    {
+                        user ? user.display_name : ""
+                    }
+                </Text>
+                <View style={{ marginTop: 5 }}></View>
+                <Text style={{ color: '#BDBDBD', fontFamily: 'Roboto-Regular', fontSize: 13, marginRight: 28 }}>
+                    {recentMessage.body}
+                </Text>
+            </View>
+        </View>
+    </TouchableHighlight>
+};
+
+const renderItem = ({ item }) => {
+    return <Item item={item} />
 };
 
 const ChatRoomFeed = () => {
     const [items, setItems] = useState(null);
-    const itemLimit = 100; 
-return (
-    <SafeAreaView style={styles.mainView}>
-        {
-            useEffect( () => {
-                fetchItems(itemLimit, 0)
-                .then((data) => {
-                    setItems(data);
-                    return (
-                            <FlatList data={items}>
-                                
-                            </FlatList>
-                    );
-                })
-                .catch((error) => {
-                    if(items !== undefined && items !== null && items.length > 0) {
-                        setItems(items.splice(0, items.length));
-                    }
-                    console.log("Rendering out error view");
-                    return (
-                        <View style={{flex: 1, alignSelf: 'center', height: '50%'}}>
-                            <Text>Not Found</Text>
-                        </View>
-                    )
-                    console.log(error);
-                })
+    const itemLimit = 100;
+    const flatlist = useRef();
+
+    useEffect(() => {
+        fetchItems(itemLimit, 0)
+            .then((data) => {
+                setItems(data);
+            })
+            .catch((error) => {
+                if (items !== undefined && items !== null && items.length > 0) {
+                    setItems(items.splice(0, items.length));
                 }
-                , []
-            )
-        }
-    </SafeAreaView>
-)
+
+            })
+    }
+        , []
+    )
+    return (
+        <SafeAreaView style={styles.mainView}>
+            <FlatList ref={flatlist} style={styles.flatList} data={items} renderItem={renderItem} keyExtractor={(item) => item.id} refreshing={false} inverted={false} keyboardShouldPersistTaps='handled' keyboardDismissMode='on-drag' onRefresh={() => {
+                flatlist.refreshing = true
+                fetchItems(itemLimit, 0)
+                    .then((data) => {
+                        setItems(data);
+                        flatlist.refreshing = false;
+                    })
+                    .catch((error) => {
+                        if (items.length > 0) {
+                            setItems(items.splice(0, items.length));
+                        }
+                        console.log(error);
+                        flatlist.refreshing = false;
+                    })
+            }} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
+                fetchItems(itemLimit, items.length)
+                    .then((data) => {
+                        console.log('Appending more content to flatlist!');
+                        setItems(items.concat(data));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            }} />
+        </SafeAreaView>
+    )
 
 };
 
@@ -72,6 +115,34 @@ const styles = StyleSheet.create({
     },
     flatList: {
         flex: 1
+    },
+    itemContentView: {
+        backgroundColor: 'white', paddingVertical: '5%', marginBottom: 10
+    },
+    itemContentViewMainHorizontalView: {
+        flexDirection: 'row',
+        flex: 1,
+        marginHorizontal: 28,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexWrap: 'nowrap'
+    },
+    itemContentViewTextVerticalView: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignContent: 'flex-start',
+        marginRight: 28
+    },
+    itemAvatarView: {
+        // backgroundColor: '#F0F0F0',
+        height: 65,
+        width: 65,
+        borderRadius: 65 / 2
+    },
+    displayName: {
+        fontFamily: 'Roboto-Regular',
+        fontSize: 14,
+        fontWeight: '500'
     }
 });
 

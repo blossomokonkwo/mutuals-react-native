@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity } from 'react-native';
 
-const Onboard2 = ({navigation}) => {
+const Onboard2 = ({ navigation }) => {
     return (
         <>
             <SafeAreaView ></SafeAreaView>
@@ -18,7 +18,7 @@ const Onboard2 = ({navigation}) => {
                 <TouchableOpacity style={styles.button} onPress={() => {
                     navigation.navigate('PhoneNumberInput');
                 }}>
-                    <Text style={{color: 'white', fontFamily: 'Roboto-Regular', fontSize: 18, fontWeight: '400'}}>
+                    <Text style={{ color: 'white', fontFamily: 'Roboto-Regular', fontSize: 18, fontWeight: '400' }}>
                         Sign up and get started
                     </Text>
                 </TouchableOpacity>

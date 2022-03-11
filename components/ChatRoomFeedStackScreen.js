@@ -7,9 +7,9 @@ import ChatRoomFeed from "./ChatRoomFeed";
 
 const ChatRoomFeedStackScreen = () => {
     return (
-            <Stack.Navigator>
-            <Stack.Screen name="ChatRoomFeed" component={ChatRoomFeed} options={{headerLargeTitle: true, headerTitle: 'Messages', headerLargeTitleShadowVisible: false, headerLargeTitleStyle: {fontFamily: 'Roboto-Bold'}}}></Stack.Screen>
-            </Stack.Navigator>
+        <Stack.Navigator>
+            <Stack.Screen name="ChatRoomFeed" component={ChatRoomFeed} options={{ headerLargeTitle: true, headerTitle: 'Replies', headerLargeTitleShadowVisible: false, headerLargeTitleStyle: { fontFamily: 'Roboto-Bold' } }}></Stack.Screen>
+        </Stack.Navigator>
     );
 };
 
