@@ -30,28 +30,41 @@ const fetchItems = async (limit, offset) => {
 
 const Item = ({ item }) => {
     const user = item.chat_room_users[0];
-    const recentMessage = item.recent_message;
-    return <TouchableHighlight style={styles.itemContentView}>
-        <View style={styles.itemContentViewMainHorizontalView}>
-            <TouchableOpacity style={styles.itemAvatarView}>
-                <Image source={require('../assets/images/BlankProfileAsset.png')} defaultSource={require('../assets/images/BlankProfileAsset.png')} style={{ width: 65, height: 65 }}>
+    if (item.recent_message) {
+        const recentMessage = item.recent_message;
+        const messageBody = recentMessage.body;
+        const answer = recentMessage.answer;
+        if (answer) {
+            const prompt = answer.prompt;
+            console.log(answer, prompt);
+            return (
+                <View style={{ marginVertical: '10%', flexDirection: 'column', flex: 1, justifyContent: 'flex-start' }}>
+                    <View style={{ marginHorizontal: 37, marginBottom: 20, flexDirection: 'column' }}>
+                        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', marginBottom: 20 }}>
+                            <TouchableOpacity style={{ backgroundColor: '#F0F0F0', height: 50, width: 50, borderRadius: 50 / 2 }}>
+                                <Image source={{ uri: recentMessage.user.avatar_url }}></Image>
+                            </TouchableOpacity>
+                            <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 15, fontWeight: '500', textAlign: 'auto', marginLeft: 10 }}>{recentMessage.user.display_name}
+                                <Text style={{ fontWeight: 'normal', fontFamily: 'Roboto-Regular', fontSize: 15 }}> replied... </Text>
+                            </Text>
+                        </View>
 
-                </Image>
-            </TouchableOpacity>
-            <View style={{ marginHorizontal: 10 }}></View>
-            <View style={styles.itemContentViewTextVerticalView}>
-                <Text style={styles.displayName}>
-                    {
-                        user ? user.display_name : ""
-                    }
-                </Text>
-                <View style={{ marginTop: 5 }}></View>
-                <Text style={{ color: '#BDBDBD', fontFamily: 'Roboto-Regular', fontSize: 13, marginRight: 28 }}>
-                    {recentMessage.body}
-                </Text>
-            </View>
-        </View>
-    </TouchableHighlight>
+                        <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 17, fontWeight: '400' }}>{recentMessage.body}</Text>
+
+                    </View>
+
+                    <View style={{ marginHorizontal: 37, flexDirection: 'column', flex: 1, justifyContent: 'flex-start' }}>
+                        <Text style={styles.promptText}>{prompt.body}</Text>
+                        <Text style={styles.answerText}>{answer.body}</Text>
+                    </View>
+                </View>
+            )
+        } else {
+            return <View></View>
+        }
+    } else {
+        return <View></View>
+    }
 };
 
 const renderItem = ({ item }) => {
@@ -60,7 +73,7 @@ const renderItem = ({ item }) => {
 
 const ChatRoomFeed = () => {
     const [items, setItems] = useState(null);
-    const itemLimit = 100;
+    const itemLimit = 10;
     const flatlist = useRef();
 
     useEffect(() => {
@@ -143,7 +156,21 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto-Regular',
         fontSize: 14,
         fontWeight: '500'
-    }
+    },
+    promptText: {
+        fontSize: 13,
+        fontWeight: '400',
+        textAlign: 'auto',
+        fontFamily: 'Roboto-Regular',
+        marginBottom: 6
+    },
+    answerText: {
+        fontSize: 15,
+        fontWeight: 'normal',
+        textAlign: 'auto',
+        fontFamily: 'Roboto-Regular',
+        color: 'gray'
+    },
 });
 
 export default ChatRoomFeed;

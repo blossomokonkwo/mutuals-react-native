@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, ScrollView, FlatList, Keyboard, dismissKeyboard, KeyboardAvoidingView } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, ScrollView, FlatList, Keyboard, dismissKeyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Keychain from 'react-native-keychain';
@@ -79,7 +79,7 @@ const Item = ({ item }) => {
                 <Text style={styles.answerText}>{answerBody}</Text>
                 <View style={{ marginBottom: 10 }}></View>
                 <View style={styles.textInputView}>
-                    <TextInput ref={inputView} style={styles.textInput} placeholder={"Reply..."} multiline={true} onChangeText={(text) => {
+                    <TextInput ref={inputView} style={styles.textInput} placeholder={"Reply..."} multiline={true} autoCorrect={false} autoCapitalize={false} onChangeText={(text) => {
                         setMessage(text);
                     }}>
 
@@ -198,7 +198,8 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
         paddingHorizontal: 10,
         alignSelf: 'center',
-        flexShrink: 1
+        flexShrink: 1,
+        flex: 1
     },
     textInputView: {
         backgroundColor: '#F0F0F0', borderRadius: 20, width: '95%', alignSelf: 'flex-start', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'
