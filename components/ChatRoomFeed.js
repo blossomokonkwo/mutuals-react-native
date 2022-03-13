@@ -36,7 +36,6 @@ const Item = ({ item }) => {
         const answer = recentMessage.answer;
         if (answer) {
             const prompt = answer.prompt;
-            console.log(answer, prompt);
             return (
                 <View style={{ marginVertical: '10%', flexDirection: 'column', flex: 1, justifyContent: 'flex-start' }}>
                     <View style={{ marginHorizontal: 37, marginBottom: 20, flexDirection: 'column' }}>
@@ -54,7 +53,7 @@ const Item = ({ item }) => {
                     </View>
 
                     <View style={{ marginHorizontal: 37, flexDirection: 'column', flex: 1, justifyContent: 'flex-start' }}>
-                        <Text style={styles.promptText}>{prompt.body}</Text>
+                        <Text style={styles.promptText}>{prompt.title}</Text>
                         <Text style={styles.answerText}>{answer.body}</Text>
                     </View>
                 </View>
@@ -82,40 +81,56 @@ const ChatRoomFeed = () => {
                 setItems(data);
             })
             .catch((error) => {
-                if (items !== undefined && items !== null && items.length > 0) {
-                    setItems(items.splice(0, items.length));
-                }
-
+                setItems(null);
             })
     }
         , []
     )
     return (
         <SafeAreaView style={styles.mainView}>
-            <FlatList ref={flatlist} style={styles.flatList} data={items} renderItem={renderItem} keyExtractor={(item) => item.id} refreshing={false} inverted={false} keyboardShouldPersistTaps='handled' keyboardDismissMode='on-drag' onRefresh={() => {
-                flatlist.refreshing = true
-                fetchItems(itemLimit, 0)
-                    .then((data) => {
-                        setItems(data);
-                        flatlist.refreshing = false;
-                    })
-                    .catch((error) => {
-                        if (items.length > 0) {
-                            setItems(items.splice(0, items.length));
-                        }
-                        console.log(error);
-                        flatlist.refreshing = false;
-                    })
-            }} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
-                fetchItems(itemLimit, items.length)
-                    .then((data) => {
-                        console.log('Appending more content to flatlist!');
-                        setItems(items.concat(data));
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-            }} />
+            {
+                items ? (
+                    <FlatList ref={flatlist} style={styles.flatList} data={items} renderItem={renderItem} keyExtractor={(item) => item.id} refreshing={false} inverted={false} keyboardShouldPersistTaps='handled' keyboardDismissMode='on-drag' onRefresh={() => {
+                        flatlist.refreshing = true
+                        fetchItems(itemLimit, 0)
+                            .then((data) => {
+                                setItems(data);
+                                flatlist.refreshing = false;
+                            })
+                            .catch((error) => {
+                                setItems(null);
+                                console.log(error);
+                                flatlist.refreshing = false;
+                            })
+                    }} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
+                        fetchItems(itemLimit, items.length)
+                            .then((data) => {
+                                setItems(items.concat(data));
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                    }} />
+                ) : (
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 20, fontWeight: '500' }}>No Replies Yet</Text>
+                            <View style={{marginTop: 10}}></View>
+                            <TouchableOpacity onPress={() => {
+                                fetchItems(itemLimit, 0)
+                                .then((data) => {
+                                    setItems(data);
+                                })
+                                .catch((error) => {
+                                    setItems(null);
+                                    console.log(error);
+                                })
+                            }}>
+                                <Text style={{color: '#057AE7'}}>Tap to retry</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    )
+            }
         </SafeAreaView>
     )
 

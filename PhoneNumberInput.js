@@ -70,7 +70,6 @@ const PhoneNumberInput = ({ navigation }) => {
                 <View style={{ paddingTop: 6 }}></View>
                 <PhoneInput ref={phoneInput} defaultCode="US" placeholder="347-440-5562" defaultValue={phoneNumber} style={{ fontSize: 30 }} autoFocus withDarkTheme onChangeFormattedText={(text) => {
                     setPhoneNumber(text);
-                    console.log(`This is the formatted phone number ${phoneNumber}`);
                 }}></PhoneInput>
                 <Text style={{ fontSize: 13, marginTop: 20, color: '#828282', textAlign: 'center' }}>By tapping send verification code, you are agreeing to our <Text style={{ color: '#828282', fontFamily: 'Roboto-Regular', fontSize: 13, fontWeight: 'bold' }} onPress={() => {
 
@@ -84,13 +83,11 @@ const PhoneNumberInput = ({ navigation }) => {
                     }
                     const isValid = parsePhoneNumber(phoneNumber).isValid();;
                     setValid(isValid);
-                    // console.log("is Valid number", valid, isValid, phoneNumber);
                     if (isValid) {
                         validatePhoneNumber(phoneNumber)
                             .then(() => {
                                 sendVerificationToken(phoneNumber)
                                     .then((response) => {
-                                        console.log("This is the send token reponse", response);
                                         navigation.navigate('Verification', { phoneNumber: phoneNumber });
                                     })
                                     .catch((error) => {

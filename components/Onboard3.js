@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from "react";
 import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image } from 'react-native';
-const { prompts } = require('../prompts');
+import { OnboardingContext, UserAuthContext } from '../context';
+
 const Onboard3 = ({ navigation }) => {
+    const prompts = useContext(OnboardingContext);
     return (
         <>
             <SafeAreaView></SafeAreaView>

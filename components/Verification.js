@@ -81,7 +81,7 @@ const Verification = ({ route, navigation }) => {
                 </View>
                 <View style={{ marginTop: 10 }}></View>
                 <View style={{ backgroundColor: '#F8F8F8', borderRadius: 10, marginHorizontal: 34, width: '85%', alignSelf: 'flex-start' }}>
-                    <TextInput keyboardType='number-pad' style={styles.input} multiline={false} autoFocus={true} onChangeText={(text) => {
+                    <TextInput keyboardType='number-pad' style={styles.input} textContentType={'oneTimeCode'} multiline={false} autoFocus={true} onChangeText={(text) => {
                         setToken(text);
                         console.log(token);
                     }}></TextInput>

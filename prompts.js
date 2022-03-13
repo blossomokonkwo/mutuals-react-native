@@ -1,3 +1,17 @@
-module.exports = {
-   prompts: [{id: 1, header: "What's a song that you have on replay rn? ", subtitle: "share a screenshot from whatever music app you use"}, {id: 2, header: "Who’s your comfort person/celeb?", subtitle: "Let’s see your fav photo of them."}, {id: 3, header: "talk about a scene in euphoria. any scene. ", subtitle: "(if you don't watch, well....come up with something)"}]
+import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import { productionDomain } from "./networking/api_variables";
+export const getPrompts = async () => {
+   fetch(`${productionDomain}/prompts`, {
+      method: 'Get',
+      headers: {
+         accpet: 'application/json'
+      }
+   }).then(async (response) => {
+      if (response.ok) {
+         const data = await response.json();
+         return data;
+      } else {
+         return null;
+      }
+   })
 };

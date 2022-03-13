@@ -1,11 +1,11 @@
 import * as Keychain from 'react-native-keychain';
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput } from 'react-native';
 import { productionDomain } from "../networking/api_variables";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainTabBar from './MainTabBar';
+import {UserAuthContext} from '../context';
 const Tab = createBottomTabNavigator();
 
 const uploadTikTokUsername = async (username) => {
@@ -27,7 +27,6 @@ const uploadTikTokUsername = async (username) => {
                 if (!response.ok) {
                     reject(`Status code error ${response.status}`);
                 } else {
-                    console.log(response);
                     resolve();
                 }
             })
@@ -40,6 +39,7 @@ const uploadTikTokUsername = async (username) => {
 
 const TikTokDisplayName = ({ navigation }) => {
     const [username, setUsername] = useState('');
+    const dispatch = useContext(UserAuthContext);
     return (
         <>
             <SafeAreaView></SafeAreaView>
@@ -61,8 +61,10 @@ const TikTokDisplayName = ({ navigation }) => {
                 <TouchableOpacity style={{ backgroundColor: '#16A2EF', alignItems: 'center', borderRadius: 100, alignSelf: 'flex-end', marginRight: 37 }} onPress={() => {
                     console.log(`This is the username: ${username}`);
                     uploadTikTokUsername(username)
-                        .then(() => {
-                            navigation.navigate('MainTabBar');
+                        .then( async () => {
+                            const credential = await Keychain.getInternetCredentials(productionDomain);
+                            const token = credential.password;
+                            dispatch({type: 'RESTORE_TOKEN', token: token})
                         })
                         .catch((error) => {
 
@@ -76,6 +78,7 @@ const TikTokDisplayName = ({ navigation }) => {
         </>
     );
 };
+
 const styles = StyleSheet.create({
     input: {
         maxWidth: '80%',
@@ -83,9 +86,6 @@ const styles = StyleSheet.create({
         padding: 20,
         fontFamily: 'Roboto-Regular',
     }
-
-
-
 });
 
 export default TikTokDisplayName;

@@ -59,7 +59,7 @@ const sendMessage = async (item, userId, message) => {
 
 const Item = ({ item }) => {
     const [message, setMessage] = useState('');
-    const promptBody = item.prompt.body;
+    const promptTitle = item.prompt.title;
     const answerBody = item.body;
     const user = item.user;
     const displayName = item.user.display_name;
@@ -75,17 +75,16 @@ const Item = ({ item }) => {
                         <Text style={styles.displayName}>{displayName}</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.promptText}>{promptBody}</Text>
+                <Text style={styles.promptText}>{promptTitle}</Text>
                 <Text style={styles.answerText}>{answerBody}</Text>
                 <View style={{ marginBottom: 10 }}></View>
                 <View style={styles.textInputView}>
-                    <TextInput ref={inputView} style={styles.textInput} placeholder={"Reply..."} multiline={true} autoCorrect={false} autoCapitalize={false} onChangeText={(text) => {
+                    <TextInput ref={inputView} style={styles.textInput} placeholder={"Reply..."} multiline={true} autoCorrect={false} autoCapitalize={'none'} onChangeText={(text) => {
                         setMessage(text);
                     }}>
 
                     </TextInput>
                     <TouchableOpacity style={{ backgroundColor: '#0581DC', height: 28, width: 28, borderRadius: 15, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginRight: 10, flexShrink: 0 }} onPress={() => {
-                        console.log('Pressed send message button');
                         Keyboard.dismiss(); // dismiss the keyboard
                         inputView.current.clear(); // Clear the input view
                         console.log('This is the message', message);
@@ -121,9 +120,7 @@ const DiscoverFeed = () => {
                 setItems(data);
             })
             .catch((error) => {
-                if (items.length > 0) {
-                    setItems(items.splice(0, items.length));
-                }
+                setItems(null);
                 console.log(error);
             })
     }
@@ -139,9 +136,7 @@ const DiscoverFeed = () => {
                         flatlist.refreshing = false;
                     })
                     .catch((error) => {
-                        if (items.length > 0) {
-                            setItems(items.splice(0, items.length));
-                        }
+                        setItems(null);
                         console.log(error);
                         flatlist.refreshing = false;
                     })
@@ -150,7 +145,6 @@ const DiscoverFeed = () => {
             }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
                 fetchItems(itemLimit, items.length)
                     .then((data) => {
-                        console.log('Appending more content to flatlist!');
                         setItems(items.concat(data));
                     })
                     .catch((error) => {
