@@ -144,31 +144,53 @@ const DiscoverFeed = () => {
     )
     return (
         <SafeAreaView style={styles.mainView}>
-            <FlatList ref={flatlist} style={styles.flatList} data={items} keyExtractor={(item) => item.id} refreshing={false} inverted={false} keyboardShouldPersistTaps='handled' keyboardDismissMode='on-drag' onRefresh={() => {
-                flatlist.refreshing = true
-                fetchItems(itemLimit, 0)
-                    .then((data) => {
-                        setItems(data);
-                        flatlist.refreshing = false;
-                    })
-                    .catch((error) => {
-                        setItems(null);
-                        console.log(error);
-                        flatlist.refreshing = false;
-                    })
-
-
-            }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
-                fetchItems(itemLimit, items.length)
-                    .then((data) => {
-                        setItems(items.concat(data));
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-            }}>
-
-            </FlatList>
+            {
+                items ? (
+                <FlatList ref={flatlist} style={styles.flatList} data={items} keyExtractor={(item) => item.id} refreshing={false} inverted={false} keyboardShouldPersistTaps='handled' keyboardDismissMode='on-drag' onRefresh={() => {
+                    flatlist.refreshing = true
+                    fetchItems(itemLimit, 0)
+                        .then((data) => {
+                            setItems(data);
+                            flatlist.refreshing = false;
+                        })
+                        .catch((error) => {
+                            setItems(null);
+                            console.log(error);
+                            flatlist.refreshing = false;
+                        })
+    
+    
+                }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
+                    fetchItems(itemLimit, items.length)
+                        .then((data) => {
+                            setItems(items.concat(data));
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }}>
+    
+                </FlatList>
+                )
+                :
+                (
+                    <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{fontSize: 20, fontWeight: '500'}}>Nothing to discover yet!</Text>
+                        <View style={{marginTop: 10}}></View>
+                        <TouchableOpacity onPress={() => {
+                            fetchItems(itemLimit, 0)
+                            .then((data) => {
+                                setItems(data);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                        }}>
+                        <Text style={{color: '#057AE7'}}>Tap to Retry</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+            }
         </SafeAreaView>
     );
 };
