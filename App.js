@@ -7,7 +7,10 @@ import { Settings } from "react-native";
 import { UserAuthContext } from './context';
 import LoginOrSignUp from './components/LoginOrSignUp.js';
 import OnboardNavStack from './components/OnboardNavStack.js';
+import { Amplitude } from '@amplitude/react-native';
 
+export const ampInstance = Amplitude.getInstance();
+ampInstance.init("dbefdbd7df803848ff508649a0d2e82c");
 
 
 const App = () => {

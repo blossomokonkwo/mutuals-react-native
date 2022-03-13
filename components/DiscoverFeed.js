@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Keychain from 'react-native-keychain';
 import { productionDomain } from "../networking/api_variables";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { ampInstance } from '../App';
 
 
 
@@ -71,7 +72,15 @@ const Item = ({ item }) => {
                     <TouchableOpacity style={styles.avatarView}>
                         <Image defaultSource={require('../assets/images/BlankProfileAsset.png')} source={{ uri: 'user.avatar_url', cache: 'force-cache' }} height={styles.avatarView.height} width={styles.avatarView.width}></Image>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        ampInstance.logEvent('Pressed Display name', {'user_id': item.user.id, 'display_name': item.user.display_name})
+                        .then((loggedEvent) => {
+                            loggedEvent ? (console.log("Logged pressed display name event!")) : (console.log("Failed to log pressed display name event"))
+                        })
+                        .catch((error) => {
+                            console.log(`An error occured when logging event: ${error}`);
+                        })
+                    }}>
                         <Text style={styles.displayName}>{displayName}</Text>
                     </TouchableOpacity>
                 </View>
@@ -91,6 +100,13 @@ const Item = ({ item }) => {
                         sendMessage(item, user.id, message)
                             .then((data) => {
                                 console.log(data);
+                                ampInstance.logEvent('Reply to prompt/answer', { 'prompt_id': item.prompt.id, 'answer_id': item.id, 'user_id': item.user.id })
+                                    .then((sentEvent) => {
+                                        sentEvent ? (console.log("Logged reply event!")) : (console.log('Failed to log reply event!'))
+                                    })
+                                    .catch((error) => {
+                                        console.log(`An error occured when logging event: ${error}`);
+                                    })
                             })
                             .catch((error) => {
                                 console.log(error);
