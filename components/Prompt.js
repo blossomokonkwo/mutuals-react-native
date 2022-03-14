@@ -1,5 +1,5 @@
 import React, { useState, useRef, createContext, useContext } from "react";
-import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, Image, TextInput, ScrollView, Keyboard } from 'react-native';
 import CurrentUser from "../data/models/CurrentUser";
 import { productionDomain } from "../networking/api_variables";
 import { OnboardingContext, UserAuthContext } from '../context';
@@ -70,6 +70,7 @@ const Prompt = ({ route, navigation }) => {
                             .then(() => {
                                 if (prompts.length > currentIndex + 1) {
                                     const prompt = prompts[currentIndex + 1];
+                                    Keyboard.dismiss();
                                     navigation.push('Prompt', { currentIndex: currentIndex + 1, prompt: prompt });
                                 } else {
                                     Settings.set({ "completed_onboarding": true });

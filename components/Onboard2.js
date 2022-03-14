@@ -3,13 +3,10 @@ import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity } from '
 
 const Onboard2 = ({ navigation }) => {
     return (
-        <>
-            <SafeAreaView ></SafeAreaView>
-            <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1 }}>
-                <Text style={{ fontSize: 18, fontWeight: '600', justifyContent: 'flex-start', alignItems: 'flex-start', paddingRight: 128 }}>Here's how it goes:</Text>
+            <SafeAreaView style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1 }}>
+                <Text style={{ fontSize: 18, fontWeight: '600', justifyContent: 'flex-start', alignSelf: 'flex-start', marginLeft: 50 }}>Here's how it goes:</Text>
                 <Text style={styles.text}>You <Text style={{ fontWeight: 'bold' }}>answer prompts</Text>. These are special prompts that give us a window into your soul, or something like that. 🤲🧬
                 </Text>
-
                 <Text style={styles.text}>Based on your prompt answers, our <Text style={{ fontWeight: 'bold' }}>algorithm</Text> gives you a feed of answers from <Text style={{ fontWeight: 'bold' }}>potential mutuals</Text>.</Text>
                 <Text style={styles.text}>Like their answer to a prompt? <Text style={{ fontWeight: 'bold' }}>Mutual them</Text>🗣‼️</Text>
 
@@ -22,26 +19,24 @@ const Onboard2 = ({ navigation }) => {
                         Sign up and get started
                     </Text>
                 </TouchableOpacity>
+            </SafeAreaView>
 
-            </View>
-
-        </>
     );
 };
 
 const styles = StyleSheet.create({
     text: {
-        paddingTop: 30,
-        paddingBottom: 5,
-        paddingLeft: 50,
-        paddingRight: 80,
+        marginTop: 30,
+        marginBottom: 5,
+        marginLeft: 50,
+        marginRight: 80,
         fontFamily: 'Roboto-Regular',
         fontSize: 18,
-        color: '#000000'
+        alignSelf: 'flex-start'
     },
     button: {
         backgroundColor: '#16A2EF',
-        width: 316,
+        width: '85%',
         height: 60,
         borderRadius: 100,
         fontSize: 20,

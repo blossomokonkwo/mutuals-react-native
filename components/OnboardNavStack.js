@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Onboard1 from '../Onboard1.js';
-import Onboard2 from '../Onboard2.js';
+import Onboard1 from './Onboard1.js';
+import Onboard2 from './Onboard2.js';
 import Onboard3 from './Onboard3.js';
 import Prompt from './Prompt.js';
-import PhoneNumberInput from '../PhoneNumberInput.js';
+import PhoneNumberInput from './PhoneNumberInput.js';
 import Verification from './Verification.js';
 import TikTokDisplayName from './TikTokDisplayName.js';
 const Stack = createNativeStackNavigator();
-import getPrompts from '../prompts';
+import getPrompts from '../networking/prompts';
 import { OnboardingContext } from '../context'
 import { productionDomain } from "../networking/api_variables";
 

@@ -126,7 +126,7 @@ const renderItem = ({ item }) => {
 
 const DiscoverFeed = () => {
     const [items, setItems] = useState(null);
-    let itemLimit = 100;
+    let itemLimit = 5;
     const flatlist = useRef();
 
 
@@ -160,7 +160,7 @@ const DiscoverFeed = () => {
                         })
     
     
-                }} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} progressViewOffset={50} onEndReachedThreshold={0.5} onEndReached={() => {
+                }} maxToRenderPerBatch={5} renderItem={renderItem} ItemSeparatorComponent={() => <View style={{ backgroundColor: '#F0F0F0', height: 1 }}></View>} onEndReachedThreshold={0.5} onEndReached={() => {
                     fetchItems(itemLimit, items.length)
                         .then((data) => {
                             setItems(items.concat(data));
