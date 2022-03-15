@@ -1,8 +1,9 @@
 import * as Keychain from 'react-native-keychain';
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Text, StyleSheet, SafeAreaView, Button, View, TouchableOpacity, TextInput, Settings } from 'react-native';
 import { productionDomain } from "../networking/api_variables";
 import SettingsKeys from '../util/settings/SettingsKeys';
+import { OnboardingContext, UserAuthContext } from '../context';
 
 const verifyToken = async (token, phoneNumber) => {
     return new Promise((resolve, reject) => {
@@ -71,6 +72,7 @@ const createNewUser = async (phoneNumber) => {
 const Verification = ({ route, navigation }) => {
     const [token, setToken] = useState('');
     const { phoneNumber } = route.params;
+    const prompts = useContext(UserAuthContext);
     return (
         <>
             <SafeAreaView></SafeAreaView>
@@ -95,7 +97,7 @@ const Verification = ({ route, navigation }) => {
                         .then(() => {
                             createNewUser(phoneNumber)
                                 .then(() => {
-                                    navigation.navigate('Onboard3');
+                                    navigation.navigate(prompts ? 'Onboard3' : 'TikTokDisplayName');
                                 })
                                 .catch((error) => {
                                     console.log(error);
