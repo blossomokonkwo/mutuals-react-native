@@ -46,7 +46,7 @@ const App = () => {
     }
   }, initialState);
 
-  React.useEffect(() => {
+  React.useEffect(() =>  {
     const fetchToken = async () => {
       let userToken;
       try {
